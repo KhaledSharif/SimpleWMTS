@@ -1,0 +1,15 @@
+FROM ubuntu:16.04
+
+RUN apt-get update
+RUN apt install -y nginx
+RUN apt-get install -y python3
+
+ADD backend/nginx.conf /etc/nginx/conf.d/
+RUN rm /etc/nginx/sites-enabled/default
+
+COPY backend /
+
+RUN mkdir /geotiffs
+
+EXPOSE 8080
+ENTRYPOINT nginx && cd /backend && python3 api.py
