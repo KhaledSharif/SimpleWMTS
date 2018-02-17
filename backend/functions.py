@@ -61,7 +61,7 @@ def make_tile_if_nonexistent(xtile: int, ytile: int, zoom: int, temp_dir, geotif
     gdal_translate = "gdal_translate -of jpeg -projwin {} {} {} {} -projwin_srs WGS84 -q -outsize 50% 0 {} {}"
 
     from os.path import isfile
-    from os import system
+    import shlex, subprocess
 
     if not isfile(temporary_path):
         ul_lat, ul_lon = wmts_to_lat_lng(
@@ -77,11 +77,18 @@ def make_tile_if_nonexistent(xtile: int, ytile: int, zoom: int, temp_dir, geotif
         )
 
         # for reference: -projwin ulx uly lrx lry
-        system(gdal_translate.format(
+        args = shlex.split(gdal_translate.format(
             ul_lon, ul_lat, lr_lon, lr_lat,
             geotiff_file.path,
             temporary_path,
         ))
+        process = subprocess.Popen(args, stdout=subprocess.PIPE)
+        while process.poll() is None:
+            output = process.stdout.readline()
+        rc = process.poll()
+        
+        assert rc == 0 or rc is None, \
+            "Error! GDAL failed on [{}] with return code {}.".format(path_to_geotiff, rc)
 
     return temporary_path
 

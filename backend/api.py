@@ -3,20 +3,7 @@ from flask_cors import CORS
 from tempfile import TemporaryDirectory
 from glob import glob
 from functions import *
-
-class GeoTIFF:
-    def __init__(self, path_to_file: str):
-        print(path_to_file)
-        from os.path import abspath
-        self.path = abspath(path_to_file)
-        self.name = self.path.split("/")[-1].split(".")[0]
-        self.info = get_gdal_info(self.path)
-    def to_json(self):
-        return {
-            "path": self.path,
-            "name": self.name,
-            "info": self.info,
-        }
+from geotiff import GeoTIFF
 
 # =======================================
 # Global variables
@@ -30,12 +17,19 @@ geotiff_files = [GeoTIFF(k) for k in geotiff_files]
 geotiff_files = {k.name:k for k in geotiff_files}
 
 # =======================================
-# Flask routing functions
+# Flask routing function A
+# getLayers route: returns a JSON list containing 
+# information about the available GeoTIFF layers
 # =======================================
 @app.route('/getLayers')
 def get_layers():
     return jsonify([gf.to_json() for gf in geotiff_files.values()])
 
+# =======================================
+# Flask routing function B
+# getTile route: returns a file of mime type 
+# `image/jpg` that matches the given WMTS request
+# =======================================
 @app.route('/getTile')
 def get_tile():
     required_parameters = [
@@ -53,7 +47,8 @@ def get_tile():
     request_args = {k.lower():v for k, v in request.args.items()}
     required_parameters = {k:request_args[k] for k in required_parameters}
 
-    assert required_parameters["layer"] in geotiff_files, "The layer {} does not exist!".format(required_parameters["layer"])
+    assert required_parameters["layer"] in geotiff_files, \
+        "The layer {} does not exist!".format(required_parameters["layer"])
     geotiff_file = geotiff_files[required_parameters["layer"]]
 
     if ":" in required_parameters["tilematrix"]:
@@ -77,4 +72,4 @@ def get_tile():
 # Main entrypoint
 # =======================================
 if __name__ == "__main__":
-    app.run(host = '0.0.0.0', port=4815, debug=True, threaded=False)
+    app.run(host = '0.0.0.0', port=4815, debug=False, threaded=True)
