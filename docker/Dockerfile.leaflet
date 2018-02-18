@@ -5,7 +5,10 @@ RUN apt-get install -y python3
 RUN apt-get install -y python3-pip
 RUN apt-get install -y libgdal-dev
 RUN apt-get install -y gdal-bin
-ADD backend/nginx.barebones.conf /etc/nginx/conf.d/
+RUN curl -sL https://deb.nodesource.com/setup_9.x | bash - 
+RUN apt-get install -y nodejs
+RUN apt-get install -y npm
+ADD backend/nginx.conf /etc/nginx/conf.d/
 RUN rm /etc/nginx/sites-enabled/default
 COPY backend /backend
 COPY frontend /frontend
@@ -14,5 +17,8 @@ RUN mkdir /geotiffs
 EXPOSE 8080
 ENTRYPOINT \
     service nginx restart && \
+    cd /frontend/leaflet && \
+    npm install && \
+    npm run build && \
     cd /backend && \
     python3 api.py
