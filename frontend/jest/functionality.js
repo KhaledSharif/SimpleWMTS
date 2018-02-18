@@ -7,7 +7,7 @@
  * @returns {Response}
  */
 exports.getTile = function testGetTile(name, x, y, z) {
-
+    // to be filled in; work in progress
 }
 
 /**
@@ -16,5 +16,5 @@ exports.getTile = function testGetTile(name, x, y, z) {
  * @returns {Response}
  */
 exports.getLayers = function testGetLayers() {
-
+    // to be filled in; work in progress
 }
