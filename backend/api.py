@@ -2,12 +2,13 @@ from flask import Flask, request, send_file, jsonify
 from flask_cors import CORS
 from tempfile import TemporaryDirectory
 from glob import glob
-from functions import *
 from geotiff import GeoTIFF
+from functions import make_tile_if_nonexistent
 
 # =======================================
 # Global variables
 # =======================================
+
 app = Flask(__name__, static_folder='../frontend')
 CORS(app)
 temporary_directory = TemporaryDirectory()

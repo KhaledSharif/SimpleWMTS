@@ -7,7 +7,7 @@ class GeoTIFF:
     path_to_file : str
     """
     def __init__(self, path_to_file: str):
-        print(path_to_file)
+        from functions import get_gdal_info
         from os.path import abspath
         self.path = abspath(path_to_file)
         self.name = self.path.split("/")[-1].split(".")[0]
