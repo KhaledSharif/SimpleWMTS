@@ -10,7 +10,7 @@ First, download a GeoTIFF to test SimpleWMTS on. You can try the Natural Earth G
 ```bash
 wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/raster/HYP_50M_SR_W.zip
 unzip HYP_50M_SR_W.zip
-mkdir ~/geotiffs && mv HYP_HR_SR_OB_DR/HYP_HR_SR_OB_DR.tif ~/geotiffs
+mkdir ~/geotiffs && mv HYP_50M_SR_W/HYP_50M_SR_W.tif ~/geotiffs
 ```
 
 Second, clone this repository to your local machine.
