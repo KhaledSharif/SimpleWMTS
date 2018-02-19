@@ -27,5 +27,11 @@ docker build -f docker/Dockerfile.leaflet -t simplewmts:leaflet .
 docker run -v ~/geotiffs:/geotiffs -p 7000:8080 simplewmts:leaflet
 ```
 
-Finally, visit the UI by going to `http://localhost:7000` in your browser.
+You may have to wait a while the container downloads dependencies required for the frontend. Once everything is ready, you will see the following line of output.
+
+```
+* Running on http://0.0.0.0:4815/ (Press CTRL+C to quit)
+```
+
+Success! Now visit the UI by going to `http://localhost:7000` in your browser. Every GeoTIFF you added to the `geotiffs` folder in your home directory will appear as a button at the top of the UI; click on that button to change Leaflet's base layer to that GeoTIFF file.
 
