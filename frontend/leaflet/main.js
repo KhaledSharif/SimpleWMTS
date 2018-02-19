@@ -19,6 +19,7 @@ L.control.scale({
     'imperial': false,
 }).addTo(map);
 
+var WMTSTileLayer;
 // define the common layerChanged function
 Window.layerChanged = function () {
     if (WMTSTileLayer) WMTSTileLayer.remove();

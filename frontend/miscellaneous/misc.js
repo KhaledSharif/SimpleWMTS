@@ -11,8 +11,7 @@ var run = function() {
         return response.json();
     }).then(function(data) {
         Window.layerName = data[0].name;
-        for (var geotiff in data)
-        {
+        for (var geotiff in data) {
            selector.appendChild(htmlToElement(
                 '<button type="button" value="' +
                 data[geotiff].name +
@@ -21,6 +20,7 @@ var run = function() {
                 '</button>'
            ));
         }
+        Window.layerChanged();
         Array.from(selector.children).forEach(function (element) {
             element.onclick = function()
             {
