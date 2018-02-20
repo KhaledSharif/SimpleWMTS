@@ -1,0 +1,24 @@
+FROM ubuntu:17.10
+RUN apt-get update
+RUN apt install -y nginx
+RUN apt-get install -y python3
+RUN apt-get install -y python3-pip
+RUN apt-get install -y libgdal-dev
+RUN apt-get install -y gdal-bin
+RUN curl -sL https://deb.nodesource.com/setup_9.x | bash - 
+RUN apt-get install -y nodejs
+RUN apt-get install -y npm
+ADD backend/nginx.conf /etc/nginx/conf.d/
+RUN rm /etc/nginx/sites-enabled/default
+COPY backend /backend
+COPY frontend /frontend
+RUN pip3 install -r /backend/requirements.txt
+RUN mkdir /geotiffs
+EXPOSE 8080
+ENTRYPOINT \
+    service nginx restart && \
+    cd /frontend/open-layers && \
+    npm install && \
+    npm run build && \
+    cd /backend && \
+    python3 api.py
