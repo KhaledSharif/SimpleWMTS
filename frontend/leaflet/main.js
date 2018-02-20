@@ -9,30 +9,47 @@ require('../miscellaneous/misc.css');
 var defaults = require('../miscellaneous/misc.js');
 defaults.run();
 
-// init Leaflet map and set the init view
-var map = L.map('map').setView([55.6, 13], 4);
+class LeafletFrontend {
+    constructor(domSelector) {
+        // init. a Leaflet map and set the init. view
+        this.map = L.map(domSelector).setView([55.6, 13], 4);
 
-// add the metric scale to the bottom left of the map
-L.control.scale({
-    'position': 'bottomleft',
-    'metric': true,
-    'imperial': false,
-}).addTo(map);
+        // add the metric scale to the bottom left of the map
+        L.control.scale({
+            'position': 'bottomleft',
+            'metric': true,
+            'imperial': false,
+        }).addTo(this.map);
 
-var WMTSTileLayer;
-// define the common layerChanged function
-Window.layerChanged = function () {
-    if (WMTSTileLayer) WMTSTileLayer.remove();
-    WMTSTileLayer = new L.TileLayer.WMTS('getTile',
-    {
-        layer: Window.layerName,
-        style: 'default',
-        tilematrixSet: '3006',
-        format: 'image/jpg'
-    });
-    map.addLayer(WMTSTileLayer);
-};
+        // init. the WMTS tile layer to null
+        this._WMTSTileLayer = null;
 
-// call the layerChanged function on init
-Window.layerChanged();
+        // init. the layer name
+        this._layerName = null;
+    }
+
+    layerChanged() {
+        if (this._WMTSTileLayer) this._WMTSTileLayer.remove();
+        this._WMTSTileLayer = new L.TileLayer.WMTS('getTile',
+        {
+            layer: this.layerName,
+            style: 'default',
+            tilematrixSet: '3006',
+            format: 'image/jpg',
+        });
+        this.map.addLayer(this._WMTSTileLayer);
+    }
+
+    get layerName() {
+        return this._layerName;
+    }
+
+    set layerName(newLayerName) {
+        this._layerName = newLayerName;
+        this.layerChanged();
+    }
+}
+
+Window.mapProvider = new LeafletFrontend('map');
+
 

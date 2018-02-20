@@ -10,7 +10,7 @@ var run = function() {
     fetch('getLayers').then(function(response) {
         return response.json();
     }).then(function(data) {
-        Window.layerName = data[0].name;
+        Window.mapProvider.layerName = data[0].name;
         for (var geotiff in data) {
            selector.appendChild(htmlToElement(
                 '<button type="button" value="' +
@@ -20,12 +20,10 @@ var run = function() {
                 '</button>'
            ));
         }
-        Window.layerChanged();
         Array.from(selector.children).forEach(function (element) {
             element.onclick = function()
             {
-                Window.layerName = this.value;
-                Window.layerChanged();
+                Window.mapProvider.layerName = this.value;
             };
         });
     });
