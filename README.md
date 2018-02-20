@@ -35,3 +35,4 @@ You may have to wait a while the container downloads dependencies required for t
 
 Success! Now visit the UI by going to `http://localhost:7000` in your browser. Every GeoTIFF you added to the `geotiffs` folder in your home directory will appear as a button at the top of the UI; click on that button to change Leaflet's base layer to that GeoTIFF file.
 
+You can also use OpenLayers or Cesium as your minimal UI instead of Leaflet. See [`Dockerfile.openlayers`](https://github.com/KhaledSharif/SimpleWMTS/blob/master/docker/Dockerfile.openlayers) and [`Dockerfile.cesium`](https://github.com/KhaledSharif/SimpleWMTS/blob/master/docker/Dockerfile.cesium) for more details. If you only need the SimpleWMTS API without `nginx` or any UI inside the container, see [`Dockerfile.barebones`](https://github.com/KhaledSharif/SimpleWMTS/blob/master/docker/Dockerfile.barebones).
